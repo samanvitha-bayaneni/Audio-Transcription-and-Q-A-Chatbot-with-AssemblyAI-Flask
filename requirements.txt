@@ -4,4 +4,6 @@ Werkzeug==2.0.1
 requests==2.25.1
 gunicorn
 python-dotenv
---global-option='build_ext' --global-option='-I/usr/local/include' --global-option='-L/usr/local/lib' pyaudio
+--global-option='build_ext' 
+--global-option='-I/usr/local/include' -
+-global-option='-L/usr/local/lib' pyaudio
