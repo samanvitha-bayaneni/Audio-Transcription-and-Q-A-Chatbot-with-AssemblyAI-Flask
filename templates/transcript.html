@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .transcript-container {
+            width: 80%;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .transcript-container h2 {
+            margin-top: 0;
+        }
+        .chat-container {
+            width: 80%;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .chat-box p {
+            margin: 0;
+            padding: 5px 0;
+        }
+        .user-message {
+            text-align: right;
+            color: blue;
+        }
+        .bot-message {
+            text-align: left;
+            color: green;
+        }
+        .input-group {
+            display: flex;
+        }
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+        }
+        .input-group button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: #007bff;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="transcript-container">
+        <h2>Transcript</h2>
+        <div id="transcript">
+            {% for utterance in transcript_data %}
+                <p>[{{ utterance.start_time }} - {{ utterance.end_time }}] Speaker {{ utterance.speaker }}: {{ utterance.text }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will be appended here -->
+        </div>
+        <div class="input-group">
+            <input type="text" id="message-input" placeholder="Type your question here...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value;
+            if (message.trim() === '') return;
+
+            // Display user message
+            const chatBox = document.getElementById('chat-box');
+            const userMessageElem = document.createElement('p');
+            userMessageElem.className = 'user-message';
+            userMessageElem.textContent = message;
+            chatBox.appendChild(userMessageElem);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Clear the input
+            messageInput.value = '';
+
+            // Send message to the server
+            fetch('/send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display bot response
+                const botMessageElem = document.createElement('p');
+                botMessageElem.className = 'bot-message';
+                botMessageElem.textContent = data.response;
+                chatBox.appendChild(botMessageElem);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Enable sending message with Enter key
+        document.getElementById('message-input').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
