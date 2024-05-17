@@ -4,5 +4,6 @@ Werkzeug==2.0.1
 requests==2.25.1
 python-dotenv==0.19.2
 gunicorn
-python3-pyaudio
-wheel
+pipwin
+pyaudio
+
