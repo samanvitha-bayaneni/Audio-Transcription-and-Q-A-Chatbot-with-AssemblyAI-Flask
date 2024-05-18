@@ -3,7 +3,6 @@
 <img src="https://www.dictalogic.com/assets/images/Dictalogic%20GIfs/Audio%20Only%20Header.gif" width=500>
 
 ```markdown
-# Audio File Transcription and Q&A Application
 
 This Flask application allows users to upload an audio file, transcribe it using AssemblyAI, and then ask questions based on the transcript.
 
