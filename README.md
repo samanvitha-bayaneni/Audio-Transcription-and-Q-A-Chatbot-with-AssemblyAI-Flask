@@ -19,7 +19,7 @@ This Flask application allows users to upload an audio file, transcribe it using
 - An AssemblyAI API key
 
 
-1. Open your web browser and go to `[http://localhost:5000](https://final-llm.onrender.com/)`.
+1. Open your web browser and go to `https://final-llm.onrender.com/`.
 
 2. Upload an audio file. Once the file is uploaded and transcribed, the transcript will be displayed along with a chat interface for asking questions.
 
